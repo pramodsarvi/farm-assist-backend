@@ -1,26 +1,15 @@
 import os
-import urllib.request
 from app import app
 from flask import Flask, request, redirect, jsonify
 from werkzeug.utils import secure_filename
 #run
 
 import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.optim import lr_scheduler
-import torch.backends.cudnn as cudnn
-import numpy as np
-import torchvision
-from torchvision import datasets, models, transforms
+from torchvision import transforms
 import matplotlib.pyplot as plt
-import time
 import os
-from IPython.core.display import Image
 import PIL.Image as Image
-import copy
 
-cudnn.benchmark = True
 plt.ion()   # interactive mode
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
