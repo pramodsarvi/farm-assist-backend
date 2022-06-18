@@ -36,7 +36,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def hello_world():
-    return 'Hello World'
+    return '<h1>Hello World</h1>'
 
 @app.route('/grape', methods=['POST'])
 def upload_file():
