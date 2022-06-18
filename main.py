@@ -33,6 +33,10 @@ def upload_file_s3(file_name):
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/')
+def hello_world():
+    return 'Hello World'
+
 @app.route('/grape', methods=['POST'])
 def upload_file():
     pred_transforms = transforms.Compose([
