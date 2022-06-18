@@ -1,6 +1,7 @@
 import os
 from app import app
 import shutil
+# from flask_restful import Resource, Api
 from flask import Flask, request, redirect, jsonify
 from werkzeug.utils import secure_filename
 import datetime
@@ -238,7 +239,7 @@ if __name__ == "__main__":
         out=model(image)
         _,pred=torch.max(out.data,1)
         return class_names[pred.item()]
-    app.run(host='0.0.0.0', port=5000)
+    # app.run(host='0.0.0.0', port=5000)
     
 
 
