@@ -1,0 +1,22 @@
+import logging
+import boto3
+from botocore.exceptions import ClientError
+import os
+
+def upload_file(file_name):
+
+    # If S3 object_name was not specified, use file_name
+
+
+    # Upload the file
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(file_name, "farmassist", file_name)
+        print(response)
+    except ClientError as e:
+        logging.error(e)
+        return False
+    return True
+
+
+print(upload_file('labels.txt'))
