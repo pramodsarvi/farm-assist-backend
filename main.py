@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 import datetime
 import torch
 from torchvision import transforms
-import matplotlib.pyplot as plt
 import os
 import PIL.Image as Image
 
