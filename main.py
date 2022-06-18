@@ -230,7 +230,7 @@ if __name__ == "__main__":
         model=model.eval()
         image=Image.open(img_path)
         image=image_transform(image).float()
-        image = image.to("cuda")
+        image = image.to("cpu")
         image=image.unsqueeze(0)
         out=model(image)
         _,pred=torch.max(out.data,1)
