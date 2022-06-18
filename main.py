@@ -237,3 +237,10 @@ if __name__ == "__main__":
         return class_names[pred.item()]
     app.run(host='0.0.0.0', port=5000)
     
+
+
+
+
+# torch==1.11.0+cpu
+# torchvision==0.12.0+cpu
+# torchaudio==0.11.0+cpu
