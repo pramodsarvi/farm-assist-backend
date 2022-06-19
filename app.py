@@ -1,11 +1,24 @@
 import os
+from fastapi import File, UploadFile
 from fastapi import FastAPI
-from fastapi import File, UploadFile, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-# UPLOAD_FOLDER = 'D:\\VSCODE\\project\\BACK\\'
-# UPLOAD_FOLDER = os.getcwd()
+app = FastAPI()
 
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins='*',
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app = FastAPI()
 import shutil
 
