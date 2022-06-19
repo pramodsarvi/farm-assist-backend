@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from fastapi import File, UploadFile, FastAPI
 
 UPLOAD_FOLDER = 'D:\\VSCODE\\project\\BACK\\'
+UPLOAD_FOLDER = os.getcwd()
+
 
 app = FastAPI()
 import shutil
@@ -21,11 +23,14 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 import os
-
+# AKIAT6M3J755ESRJNFML
+# YI6+Vx7BctLHpkE+BDqzEuwM4pQu6UkEGmb1XYGe
 
 def upload_file_s3(file_name):
+    print(os.getcwd())
     # s3 = boto3.resource('s3', use_ssl=False, verify=False)
-    s3_client = boto3.client('s3',use_ssl=False,verify=False)
+    # s3_client = boto3.client('s3',aws_access_key_id='AKIAT6M3J755ESRJNFML',aws_secret_access_key='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')
+    s3_client = boto3.client('s3',aws_access_key_id=os.environ['aws_access_key_id'],aws_secret_access_key=os.environ['aws_secret_access_key'])
     try:
         response = s3_client.upload_file(file_name, "farmassist", file_name)
     except Exception as e:
