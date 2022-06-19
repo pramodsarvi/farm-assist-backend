@@ -66,7 +66,7 @@ async def upload_file_grape(file: UploadFile = File(...)):
     print("hit")
     class_names=['Grape___Black_rot', 'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)','Grape___healthy']
 	# check if the post request has the file part
-    model=load("model_grape.pt",map_location=device('cpu') )
+    model_grape=load("model_grape.pt",map_location=device('cpu') )
     
     
 
@@ -87,7 +87,7 @@ async def upload_file_grape(file: UploadFile = File(...)):
         # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         print("file_upload")
         # actual work
-        pred=classify(model,pred_transforms,filename,class_names)
+        pred=classify(model_grape,pred_transforms,filename,class_names)
         # save image with name
         ct = datetime.datetime.now()
         print("current time:-", ct)
@@ -136,27 +136,27 @@ def upload_file_tomato():
  'Tomato___healthy',
  'Tomato_powdery_Mildew']
 	# check if the post request has the file part
-    model=load("model_grape.pt",map_location=device('cpu') )
+    model_tomato=load("model_grape.pt",map_location=device('cpu') )
     
     
 
-    if 'file' not in request.files:
-        resp = {'message' : 'No file part in the request'}
-        # resp.status_code = 400
-        return resp
+    # if 'file' not in request.files:
+    #     resp = {'message' : 'No file part in the request'}
+    #     # resp.status_code = 400
+    #     return resp
 
-    file = request.files['file']
-    if file.filename == '':
-        resp = {'message' : 'No file selected for uploading'}
-        return {'message' : 'No file selected for uploading'}
+    # file = request.files['file']
+    # if file.filename == '':
+    #     resp = {'message' : 'No file selected for uploading'}
+    #     return {'message' : 'No file selected for uploading'}
 
     if file and allowed_file(file.filename):
         
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        filename = file.filename
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         print("file_upload")
         # actual work
-        pred=classify(model,pred_transforms,filename,class_names)
+        pred=classify(model_tomato,pred_transforms,filename,class_names)
         # 
         # save image with name
         ct = datetime.datetime.now()
@@ -208,16 +208,16 @@ async def upload_file_apple(file: UploadFile = File(...)):
     
     
 
-    if 'file' not in request.files:
-        resp = {'message' : 'No file part in the request'}
-        # resp.status_code = 400
-        return resp
+    # if 'file' not in request.files:
+    #     resp = {'message' : 'No file part in the request'}
+    #     # resp.status_code = 400
+    #     return resp
 
-    file = request.files['file']
-    if file.filename == '':
-        resp = {'message' : 'No file selected for uploading'}
-        # resp.status_code = 400
-        return resp
+    # file = request.files['file']
+    # if file.filename == '':
+    #     resp = {'message' : 'No file selected for uploading'}
+    #     # resp.status_code = 400
+    #     return resp
 
     if file and allowed_file(file.filename):
         
