@@ -8,9 +8,9 @@ UPLOAD_FOLDER = 'D:\\VSCODE\\project\\BACK\\'
 app = FastAPI()
 import shutil
 # from flask_restful import Resource, Api
-from werkzeug.utils import secure_filename
 import datetime
-import torch
+from torch import load
+from torch import max as torchmax
 from torchvision import transforms
 import os
 import PIL.Image as Image
@@ -53,7 +53,7 @@ def upload_file():
     print("hit")
     class_names=['Grape___Black_rot', 'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)','Grape___healthy']
 	# check if the post request has the file part
-    model=torch.load("model_grape.pt")
+    model=load("model_grape.pt")
     
     
 
@@ -122,7 +122,7 @@ def upload_file_tomato():
  'Tomato___healthy',
  'Tomato_powdery_Mildew']
 	# check if the post request has the file part
-    model=torch.load("model_grape.pt")
+    model=load("model_grape.pt")
     
     
 
@@ -184,7 +184,7 @@ def upload_file_apple():
  'Apple___Cedar_apple_rust',
  'Apple___healthy']
 	# check if the post request has the file part
-    model=torch.load("model_apple10.pt")
+    model=load("model_apple10.pt")
     
     
 
@@ -239,7 +239,7 @@ def classify(model,image_transform,img_path,class_names):
     image = image.to("cpu")
     image=image.unsqueeze(0)
     out=model(image)
-    _,pred=torch.max(out.data,1)
+    _,pred=torchmax(out.data,1)
     return class_names[pred.item()]
 
 
