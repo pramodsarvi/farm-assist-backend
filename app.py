@@ -1,7 +1,6 @@
 import os
 from fastapi import FastAPI
-from fastapi import FastAPI
-
+from fastapi import File, UploadFile, FastAPI
 
 UPLOAD_FOLDER = 'D:\\VSCODE\\project\\BACK\\'
 
@@ -10,6 +9,7 @@ import shutil
 
 # from flask_restful import Resource, Api
 import datetime
+from torch import device
 from torch import load
 from torch import max as torchmax
 from torchvision import transforms
@@ -45,7 +45,17 @@ def hello_world():
     return '<h1>Hello World</h1>'
 
 @app.post('/grape')
-def upload_file():
+async def upload_file_grape(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+        print(file.filename)
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        await file.close()
+        
     pred_transforms = transforms.Compose([
         transforms.RandomResizedCrop(224),
         transforms.ToTensor(),
@@ -54,25 +64,25 @@ def upload_file():
     print("hit")
     class_names=['Grape___Black_rot', 'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)','Grape___healthy']
 	# check if the post request has the file part
-    model=load("model_grape.pt")
+    model=load("model_grape.pt",map_location=device('cpu') )
     
     
 
-    if 'file' not in request.files:
-        resp = {'message' : 'No file part in the request'}
-        resp.status_code = 400
-        return resp
+    # if 'file' not in request.files:
+    #     resp = {'message' : 'No file part in the request'}
+    #     resp.status_code = 400
+    #     return resp
 
-    file = request.files['file']
-    if file.filename == '':
-        resp = {'message' : 'No file selected for uploading'}
-        resp.status_code = 400
-        return resp
+    # file = request.files['file']
+    # if file.filename == '':
+    #     resp = {'message' : 'No file selected for uploading'}
+    #     resp.status_code = 400
+    #     return resp
 
     if file and allowed_file(file.filename):
         
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        filename = file.filename
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         print("file_upload")
         # actual work
         pred=classify(model,pred_transforms,filename,class_names)
@@ -102,11 +112,11 @@ def upload_file():
             resp = {'message' : 'File successfully uploaded',"pesticides":"Pesticides : Spraying of the grapevines at 3-4 leaf stage with fungicides like Bordeaux mixture at 0.8% or copper oxychloride at 025% or Carbendazim at 0.1% are effective against this disease","path":newfile,"disease":"Isariopsis Leaf Spot","url":"https://farmassist.s3.ap-south-1.amazonaws.com/"+newfile}
         else:
             resp = {'message' : 'File successfully uploaded',"pesticides":"","path":newfile,"disease":"Healthy","url":"https://farmassist.s3.ap-south-1.amazonaws.com/"+newfile}
-        resp.status_code = 201
+        # resp.status_code = 201
         return resp
     else:
         resp = {'message' : 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'}
-        resp.status_code = 400
+        # resp.status_code = 400
         return resp
 
 @app.post('/tomato')
@@ -123,19 +133,18 @@ def upload_file_tomato():
  'Tomato___healthy',
  'Tomato_powdery_Mildew']
 	# check if the post request has the file part
-    model=load("model_grape.pt")
+    model=load("model_grape.pt",map_location=device('cpu') )
     
     
 
     if 'file' not in request.files:
         resp = {'message' : 'No file part in the request'}
-        resp.status_code = 400
+        # resp.status_code = 400
         return resp
 
     file = request.files['file']
     if file.filename == '':
         resp = {'message' : 'No file selected for uploading'}
-        resp.status_code = 400
         return {'message' : 'No file selected for uploading'}
 
     if file and allowed_file(file.filename):
@@ -166,14 +175,21 @@ def upload_file_tomato():
         else:
             resp = {'message' : 'File successfully uploaded',"pesticides":""}
         # resp = {'message' : 'File successfully uploaded'}
-        resp.status_code = 201
         return resp
     else:
         resp = {'message' : 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'}
-        resp.status_code = 400
         return resp
 @app.post('/apple')
-def upload_file_apple():
+async def upload_file_apple(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+        print(file.filename)
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        await file.close()
     pred_transforms = transforms.Compose([
         transforms.RandomResizedCrop(224),
         transforms.ToTensor(),
@@ -185,25 +201,24 @@ def upload_file_apple():
  'Apple___Cedar_apple_rust',
  'Apple___healthy']
 	# check if the post request has the file part
-    model=load("model_apple10.pt")
+    model=load("model_apple10.pt",map_location=device('cpu') )
     
     
 
     if 'file' not in request.files:
         resp = {'message' : 'No file part in the request'}
-        resp.status_code = 400
+        # resp.status_code = 400
         return resp
 
     file = request.files['file']
     if file.filename == '':
         resp = {'message' : 'No file selected for uploading'}
-        resp.status_code = 400
+        # resp.status_code = 400
         return resp
 
     if file and allowed_file(file.filename):
         
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
         print("file_upload")
         # actual work
         pred=classify(model,pred_transforms,filename,class_names)
@@ -226,18 +241,17 @@ def upload_file_apple():
         else:
             resp = {'message' : 'File successfully uploaded',"pesticides":""}
         # resp = {'message' : 'File successfully uploaded'}
-        resp.status_code = 201
+        # resp.status_code = 201
         return resp 
     else:
         resp = {'message' : 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'}
-        resp.status_code = 400
+        # resp.status_code = 400
         return resp
 
 def classify(model,image_transform,img_path,class_names):
     model=model.eval()
     image=Image.open(img_path)
     image=image_transform(image).float()
-    image = image.to("cpu")
     image=image.unsqueeze(0)
     out=model(image)
     _,pred=torchmax(out.data,1)
