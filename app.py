@@ -25,7 +25,7 @@ import os
 
 def upload_file_s3(file_name):
     # s3 = boto3.resource('s3', use_ssl=False, verify=False)
-    s3_client = boto3.client('s3',verify=False)
+    s3_client = boto3.client('s3',use_ssl=False,verify=False)
     try:
         response = s3_client.upload_file(file_name, "farmassist", file_name)
     except Exception as e:
