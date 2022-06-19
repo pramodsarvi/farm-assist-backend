@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI
 from fastapi import File, UploadFile, FastAPI
 
-UPLOAD_FOLDER = 'D:\\VSCODE\\project\\BACK\\'
+# UPLOAD_FOLDER = 'D:\\VSCODE\\project\\BACK\\'
 # UPLOAD_FOLDER = os.getcwd()
 
 
@@ -27,6 +27,7 @@ import os
 # YI6+Vx7BctLHpkE+BDqzEuwM4pQu6UkEGmb1XYGe
 
 def upload_file_s3(file_name):
+
     # s3 = boto3.resource('s3', use_ssl=False, verify=False)
     s3_client = boto3.client('s3',aws_access_key_id='AKIAT6M3J755ESRJNFML',aws_secret_access_key='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')
     # s3_client = boto3.client('s3',aws_access_key_id=os.environ['ACCESS_KEY'],aws_secret_access_key=os.environ['SECRET_KEY'])
@@ -35,6 +36,7 @@ def upload_file_s3(file_name):
     except Exception as e:
         logging.error(e)
         return False
+    os.remove(file_name)
     return True
 
 def allowed_file(filename):
