@@ -28,7 +28,7 @@ import os
 
 def upload_file_s3(file_name):
     print(os.getcwd())
-    print(os.environ['aws_access_key_id'])
+    print(os.environ['ACCESS_KEY'])
     # s3 = boto3.resource('s3', use_ssl=False, verify=False)
     # s3_client = boto3.client('s3',aws_access_key_id='AKIAT6M3J755ESRJNFML',aws_secret_access_key='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')
     s3_client = boto3.client('s3',aws_access_key_id=os.environ['ACCESS_KEY'],aws_secret_access_key=os.environ['SECRET_KEY'])
