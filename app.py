@@ -28,7 +28,7 @@ def upload_file_s3(file_name):
     s3_client = boto3.client('s3')
     try:
         response = s3_client.upload_file(file_name, "farmassist", file_name)
-    except:
+    except e:
         logging.error(e)
         return False
     return True
@@ -92,7 +92,7 @@ async def upload_file_grape(file: UploadFile = File(...)):
         print(pred)
         newfile=str(ts)+".jpg"
         os.rename(filename,newfile)
-        
+
         upload_file_s3(newfile)
         print("uploaded to s3")
         print("https://farmassist.s3.ap-south-1.amazonaws.com/"+newfile)
