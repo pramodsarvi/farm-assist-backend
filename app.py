@@ -7,6 +7,7 @@ UPLOAD_FOLDER = 'D:\\VSCODE\\project\\BACK\\'
 
 app = FastAPI()
 import shutil
+
 # from flask_restful import Resource, Api
 import datetime
 from torch import load
