@@ -1,4 +1,6 @@
 # import os
+# -f https://download.pytorch.org/whl/torch_stable.html
+# 
 # from fastapi import FastAPI
 # from fastapi import FastAPI
 
