@@ -34,7 +34,7 @@ def upload_file_s3(file_name):
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
+@app.route('/',methods=['GET'])
 def hello_world():
     return '<h1>Hello World</h1>'
 
@@ -227,20 +227,16 @@ def upload_file_apple():
         resp.status_code = 400
         return resp
 
+def classify(model,image_transform,img_path,class_names):
+    model=model.eval()
+    image=Image.open(img_path)
+    image=image_transform(image).float()
+    image = image.to("cpu")
+    image=image.unsqueeze(0)
+    out=model(image)
+    _,pred=torch.max(out.data,1)
+    return class_names[pred.item()]
 
-if __name__ == "__main__":
-
-    def classify(model,image_transform,img_path,class_names):
-        model=model.eval()
-        image=Image.open(img_path)
-        image=image_transform(image).float()
-        image = image.to("cpu")
-        image=image.unsqueeze(0)
-        out=model(image)
-        _,pred=torch.max(out.data,1)
-        return class_names[pred.item()]
-    # app.run(host='0.0.0.0', port=5000)
-    
 
 
 

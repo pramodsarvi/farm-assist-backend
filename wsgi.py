@@ -2,7 +2,6 @@
 from main import app
 import torch 
 import PIL.Image as Image
-from waitress import serve
 if __name__ == '__main__':
     def classify(model,image_transform,img_path,class_names):
         model=model.eval()
@@ -14,5 +13,4 @@ if __name__ == '__main__':
         _,pred=torch.max(out.data,1)
         return class_names[pred.item()]
     
-    serve(app, host="0.0.0.0", port=5000)
-    # app.run()
+    app.run()
