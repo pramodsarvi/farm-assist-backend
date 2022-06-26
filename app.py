@@ -5,21 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8080",
-    "http://localhost:3000",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 app = FastAPI()
 import shutil
 
@@ -156,7 +141,7 @@ async def upload_file_tomato(file: UploadFile = File(...)):
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
-    class_names=['Tomato___Blight', 'Tomato___Leaf_Mold', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___healthy','Tomato_powdery_Mildew']
+    class_names=['Tomato___Blight', 'Tomato___Leaf_Mold', 'Tomato___Yellow_Leaf_Curl_Virus', 'Tomato___Healthy','Tomato_Powdery_Mildew']
 # # check if the post request has the file part
     model_grape=load("model_tomato_new.pt",map_location=device('cpu') )
     
@@ -200,11 +185,13 @@ async def upload_file_tomato(file: UploadFile = File(...)):
         # in response
 
         if pred==class_names[0]:
-            resp = {'message' : 'File successfully uploaded',"pesticides":"Pesticides:Myclobutanil","disease":"Apple Scab"}
+            resp = {'message' : 'File successfully uploaded',"pesticides":"Pesticides:Myclobutanil","disease":"Blight"}
         elif pred==class_names[1]:
-            resp = {'message' : 'File successfully uploaded',"pesticides":"Pesticides: Copper oxychloride(spraying with copper oxychloride at a concentration of 5-7g/L of water.)","disease":"Black Rot"}
+            resp = {'message' : 'File successfully uploaded',"pesticides":"Pesticides: Copper oxychloride(spraying with copper oxychloride at a concentration of 5-7g/L of water.)","disease":"Leaf Mold"}
         elif pred==class_names[2]:
-            resp = {'message' : 'File successfully uploaded',"pesticides":"Pesticides:Chlorathalonil(Daconil),Mancozeb,Sulfur,Thiram,and Ziram","disease":"Cedar Apple Rust"}
+            resp = {'message' : 'File successfully uploaded',"pesticides":"Pesticides:Chlorathalonil(Daconil),Mancozeb,Sulfur,Thiram,and Ziram","disease":"Healthy"}
+        elif pred==class_names[3]:
+            resp = {'message' : 'File successfully uploaded',"pesticides":"Pesticides:Chlorathalonil(Daconil),Mancozeb,Sulfur,Thiram,and Ziram","disease":"Powdery Mildew"}
         else:
             resp = {'message' : 'File successfully uploaded',"pesticides":""}
 
